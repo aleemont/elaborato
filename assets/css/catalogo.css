@@ -1,0 +1,112 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    min-height: 100vh;
+    font-family: "Poppins", sans-serif;
+    background-color: rgb(255, 255, 198);
+    margin-top: 54px;
+}
+
+ul {
+    list-style-type:none;
+}
+
+.navbar{
+    background-color: #6a34fd;
+}
+
+.navbar-brand{
+    color: white;
+    font-weight:bolder;
+}
+.card{
+    border-radius: 20px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2), 0px 0px 25px rgba(0, 0, 0, 0.2);
+    background-color: white;
+}
+
+.card-header{
+    border-radius: 20px !important;
+}
+ 
+.card-body{
+    background-color: #4714d3;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.card-body h3{
+    color: yellow;
+}
+
+.card-body h6 div{
+    background-color: white;
+    color:#4714d3;
+}
+
+.circle {
+    width: 25rem;
+    height: 25rem;
+    background: #4714d3;
+    position: fixed;
+    left:0rem;
+    top:5rem;
+    border-radius: 50%;
+    z-index: -1;
+}
+.circle1 {
+    width: 10rem;
+    height: 10rem;
+    background: yellow;
+    position: fixed;
+    right:40rem;
+    top:10rem;
+    border-radius: 50%;
+    z-index: -1;
+}
+.circle2 {
+    width: 20rem;
+    height: 20rem;
+    background:#4714d3;
+    position: fixed;
+    left:60rem;
+    top:20rem;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.circle3 {
+    width: 13rem;
+    height: 13rem;
+    background: yellow;
+    position: fixed;
+    right:40rem;
+    top:50rem;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.circle4 {
+    width: 7rem;
+    height: 7rem;
+    background:#4714d3;
+    position: fixed;
+    left:40rem;
+    top:45rem;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.circle5 {
+    width: 8rem;
+    height: 8rem;
+    background:#4714d3;
+    position: fixed;
+    left:30rem;
+    top:35rem;
+    border-radius: 50%;
+    z-index: -1;
+}

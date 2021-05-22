@@ -10,6 +10,10 @@ body{
     background-color: white;
 }
 
+ul {
+    list-style-type: none;
+}
+
 .navbar{
     background-color: #4714d3;
 }
@@ -18,3 +22,4 @@ body{
     color: white;
     font-weight:bolder;
 }
+

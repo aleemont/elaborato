@@ -23,3 +23,11 @@ ul {
     font-weight:bolder;
 }
 
+.small-card {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color:#457B9D !important;
+    padding: 5px;
+  }

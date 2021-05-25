@@ -129,7 +129,8 @@
                 </li>
               </ul>
             </div>
-            <div class="card-footer border-0 bg-white d-flex"><input type="submit" name="filter" value="Filtra" class="btn btn-secondary w-100"/></div>
+            <div class="card-footer border-0 bg-white d-flex mb-0 pb-1"><input type="submit" name="filter" value="Filtra" class="btn btn-secondary w-100"/></div>
+            <div class="card-footer border-0 bg-white d-flex mt-0 pt-1"><a href="index.php" class="btn btn-success w-100">Cancella Filtri</a></div>
           </form>
         </div>
       </div>
@@ -235,13 +236,16 @@
               </div>
             </div>
             <div class="card-footer border-0 bg-white d-flex justify-content-center"><input type="submit" name="filter" value="Filtra" class="btn btn-secondary w-75"/></div>
+            <div class="card-footer border-0 bg-white d-flex justify-content-center mt-0 pt-1"><a href="index.php" class="btn btn-success w-75">Cancella Filtri</a></div>
             </form>
           </div>
         </div>
         </div>
         <div class="card rounded">
           <div class="card-header bg-secondary">
+            <div class="container-fluid w-100">
             <h2 class="text-white m-1">Prodotti in offerta</h2>
+            </div>
           </div>
           <div class="card-body row p-1 p-md-5">
               <div class="col-12">
@@ -356,7 +360,7 @@
                     $stm = $dbh->query($main_query);
                     $prodotti = $stm->fetchAll(PDO::FETCH_BOTH);
                     $stm = null;
-                    if(!$prodotti) exit("<div class='container-fluid d-flex justify-content-center'><div class='row'><h2 class='col-12 ml-4'>OOPS! Nessun prodotto disponibile :(</h2><a href='index.php' class='btn btn-primary col-10 ml-5'>Cancella filtri di ricerca</a></div></div>");
+                    if(!$prodotti) exit("<div class='container d-flex align-items-center justify-content-center'><div class='row d-flex justify-content-center'><h2 class='col-10 font-weight-bold pl-5'>OOPS! Nessun prodotto disponibile :(</h2><a href='index.php' class='btn btn-primary col-10'>Cancella filtri di ricerca</a></div></div>");
                     foreach($prodotti as $prodotto){
                   ?>
                   <div class="col-lg-4 col-md-6 col-12">
@@ -364,7 +368,7 @@
                     <div class="card-header border-0 bg-white d-flex align-items-center justify-content-center">
                     <a href="product.php?prod=<?php echo $prodotto[0]; ?>"><img class="img img-fluid" src=<?php echo $prodotto["Immagine"]; ?> alt = <?php echo $prodotto["Nome"];?>/></a>
                     </div> 
-                    <div class="card-body border-top">
+                    <div class="card-body border-top title">
                       <a href="product.php?prod=<?php echo $prodotto[0]; ?>"><?php echo $prodotto["Nome"]."&nbsp;"?></a>
                     </div>
                     <div class="accordion" id="accordion" role="tablist">
@@ -446,8 +450,8 @@
                       </div>
                     <div class="m-3 p-0"> 
                       <div class="d-flex justify-content-center"><h1 class="text-danger font-weight-bold"><?php echo $prodotto["Prezzo"]?>€</h1></div>
-                      <button type="button" class="btn btn-primary w-100 font-weight-bold mb-2" >Acquista ora</button>
-                      <button type="button" class="btn btn-secondary w-100 font-weight-bold" style="background-color:orange !important;">Aggiungi al carrello</button>
+                      <a href="order.php?order=<?php echo $prodotto[0]; ?>" class="btn btn-primary w-100 font-weight-bold mb-2" >Acquista ora</a>
+                      <button type="button" class="btn w-100 font-weight-bold bt-orange">Aggiungi al carrello</button>
                     </div>
                   </div>
                   </div>

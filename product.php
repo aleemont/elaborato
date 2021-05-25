@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <link rel="stylesheet" href="./assets/css/colors.css">
         <link rel="stylesheet" href="./assets/css/main.css">
-        <title>ElttroShop</title>
+        <title>ElettroShop</title>
     </head>
     <body>
         <nav class="navbar navbar-default bg-primary">
@@ -43,9 +43,6 @@
                     <div class="m-5"><img class="img img-fluid" src="<?php echo $SRC["Immagine"]; ?>" alt = "IMG"/></div>
                 </div>
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                    <?php
-                        
-                    ?>
                     <div class="mt-5">
                         <h1 class="mt-5 text-secondary font-weight-bold"><?php echo $SRC["Nome"] ?></h1>
                         <br>
@@ -129,7 +126,7 @@
                                         $Schermo = $stm->fetch(PDO::FETCH_ASSOC);
                                         $stm = null;
                                     ?>
-                                    <li><?php echo $Schermo["Diagonale"]."\" ".$Schermo["Tipo"]." ".$Schermo["Risoluzione"]?></li>
+                                    <li><?php echo $Schermo["Diagonale"]."\" ".$Schermo["Tipo"]." ".$Schermo["Risoluzione"];?></li>
                                 </ul>
                             </li>
                         </ul>
@@ -137,9 +134,12 @@
                 </div>
                 <div class="col-lg-4 col-md-12 col-sm-12 d-flex align-items-center justify-content-center">
                     <div class="m-5 p-0">
-                        <div class="d-flex justify-content-center"><h2 class="text-primary font-weight-bold mt-2">SOLO:&nbsp;</h2><h1 class="text-danger font-weight-bold"><?php echo $SRC["Prezzo"]?>€</h1></div>
-                        <div class="d-flex justify-content-center mt-0 mb-2"><small class="text-disabled">(IVA e contributo RAEE inclusi nel prezzo)</small></div>
-                        <button type="button" class="btn btn-primary w-100 font-weight-bold mb-2" >Acquista ora</button>
+                        <div class="d-flex justify-content-center">
+                            <h2 class="text-primary font-weight-bold mt-2">SOLO:&nbsp;</h2>
+                            <h1 class="text-danger font-weight-bold"><?php echo $SRC["Prezzo"];?>€</h1>
+                        </div>
+                       
+                        <a href="./order.php?order=<?php echo $SRC["ID"]; ?>" class="btn btn-primary w-100 font-weight-bold mb-2" >Acquista ora</a>
                         <button type="button" class="btn btn-secondary w-100 font-weight-bold" style="background-color:orange !important;">Aggiungi al carrello</button>
                     </div>
                 </div>

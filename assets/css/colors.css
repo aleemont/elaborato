@@ -68,8 +68,33 @@
     border-color: #F1FAEE !important;
 }
 
+.border-primary{
+    border-color: #1D3557 !important;
+}
+
+.border-secondary{
+    border-color: #457B9D !important;
+}
+
+.border-success{
+    border-color: #C8E7E9 !important;
+}
+
+.border-danger{
+    border-color: #E63946 !important;
+}
+
+.border-info{
+    border-color: #F1FAEE !important;
+}
+
+.bt-orange{
+    background-color:orange !important;
+    color: #FFF !important;
+}
 
 .list-group-item{
     background-color:whitesmoke !important;
 }
+
 

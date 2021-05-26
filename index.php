@@ -1,3 +1,7 @@
+<?php 
+  if(!session_id()) session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -10,6 +14,8 @@
     <meta name="dc.language" content="ita" scheme="RFC1766">
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
     <link rel="stylesheet" href="./assets/css/colors.css">
     <link rel="stylesheet" href="./assets/css/main.css">
     <title>ElettroShop</title>
@@ -18,6 +24,14 @@
     <nav class="navbar navbar-default bg-primary">
         <div class="navbar-brand">
           <a href="index.php" class="h3">Elettro-Shop</a>
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
+        <?php
+          if(!empty($_SESSION["carrello"])) {
+          $cart_count = count(array_keys($_SESSION["carrello"]));
+          }
+        ?>
+        <a href="carrello.php"><span class="material-icons" style="color:white;">shopping_cart</span><?php echo $cart_count; ?></a>
         </div>
     </nav>
     <!--Inizializzo la connessione al DB -->
@@ -34,7 +48,6 @@
     <div class="container-fluid pl-5 pr-5">
       <div class="row mt-3 mb-4">
     <!--Left wrapper start-->
-    
       <div class="container d-none d-lg-block col-lg-3">
         <div class="card rounded">
           <div class="card-header border-0 bg-secondary">
@@ -142,7 +155,7 @@
           <div class="card-header border-0 bg-primary" role="tab" id="heading-filter ?>">
             <h6 class="mb-0 d-flex justify-content-center"> <a data-toggle="collapse" href="#collapse-filter" aria-expanded="false" aria-controls="collapse-filter" data-abc="true" class="collapsed text-white"> Filtri di ricerca </a> </h6>
           </div>
-          <div id="collapse-filter" class="collapse bg-white" role="tabpanel" aria-labelledby="heading-filter" data-parent="#accordion-filter" style="">
+          <div id="collapse-filter" class="collapse bg-white" role="tabpanel" aria-labelledby="heading-filter" data-parent="#accordion-filter">
          
           <div class="card-body border-0">
           <div class="row">
@@ -450,14 +463,47 @@
                       </div>
                     <div class="m-3 p-0"> 
                       <div class="d-flex justify-content-center"><h1 class="text-danger font-weight-bold"><?php echo $prodotto["Prezzo"]?>€</h1></div>
-                      <a href="order.php?order=<?php echo $prodotto[0]; ?>" class="btn btn-primary w-100 font-weight-bold mb-2" >Acquista ora</a>
-                      <button type="button" class="btn w-100 font-weight-bold bt-orange">Aggiungi al carrello</button>
+                      <?php
+                        if(!isset($_SESSION["codFis"])){
+                      ?>
+                        <a href="login.php?order=<?php echo $prodotto[0]; ?>" class="btn btn-primary w-100 font-weight-bold mb-2" >Acquista ora</a>
+                      <?php
+                        }else{
+                        ?>
+                        <a href="order.php?order=<?php echo $prodotto[0]; ?>" class="btn btn-primary w-100 font-weight-bold mb-2" >Acquista ora</a>
+                      <?php 
+                        }
+                      ?>
+                      <a href="index.php?addCart=true&prod=<?php echo $prodotto[0] ?>" class="btn w-100 font-weight-bold bt-orange">Aggiungi al carrello</a>
                     </div>
                   </div>
                   </div>
                   </div>
                   </div>
                 <?php
+                  }
+                  if(isset($_GET['addCart']) && $_GET['addCart']==true){
+                    $prod = $_GET['prod'];
+                    $stm = $dbh->prepare("SELECT * FROM Prodotto WHERE ID = ?");
+                    $stm->execute([$prod]);
+                    $prodotto=$stm->fetch(PDO::FETCH_ASSOC);
+                    $carrello = array(
+                      $prod = array(
+                        "ID" => $prod
+                      )
+                    );
+                    if(empty($_SESSION["carrello"])){
+                      $_SESSION["carrello"] = $carrello;
+                    }else{
+                      $array_keys = array_keys($_SESSION["carrello"]);
+                      if(!in_array($prod,$array_keys)) {
+                        $_SESSION["carrello"] = array_merge(
+                          $_SESSION["carrello"],
+                          $carrello
+                          );
+                      }
+                    }
+                    var_dump($_SESSION["carrello"]);
                   }
                 ?>
               </div>

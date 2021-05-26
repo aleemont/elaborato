@@ -1,5 +1,10 @@
 <?php
-session_start();
+    if(!session_id()) session_start();
+
+    $user = "root";
+    $pass = "Ale-26062002";
+    if(!isset($_SESSION["codFis"]))
+        $_SESSION["codFis"] = $_POST["codFis"];
 ?>
 
 <!DOCTYPE html>
@@ -21,21 +26,19 @@ session_start();
 <body class="bg-success">
     <nav class="navbar navbar-default bg-primary">
         <div class="navbar-brand">
-          <a href="index.php" class="h3">Elettro-Shop</a>
+          <a href="index.php?>" class="h3">Elettro-Shop</a>
         </div>
     </nav>
     <!--Inizializzo la connessione al DB -->
     <?php
-      $user = "root";
-      $pass = "Ale-26062002";
-      try {
-        $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
+        try {
+            $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
       } catch (PDOException $e) {
-        print "Errore nella connessione al DataBase!: " . $e->getMessage() . "<br/>";
+        print "Errore nella connessione al Database!: " . $e->getMessage() . "<br/>";
         die();
       }
     ?>
-    <div class="d-flex align-items-center justify-content-center" style="min-height:85vh; min-width:100%" id="main">
+    <div class="d-flex align-items-center justify-content-center" style="min-height:85vh; min-width:100%">
         <div class="container bg-white p-5">
             <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
@@ -84,11 +87,20 @@ session_start();
                             <div class="col-12">
                                 <form action="" method="POST" class="w-100 mb-5">
                                     <input type="number" name="quantità" min="1" max="20" value="1" step="1" placeholder="Quantità (max. 20)" class="w-100 mt-5 mb-2 rounded p-2">
+                                    <select name="magazzino" class="w-100 mt-2 mb-2 rounded p-2 bg-white">
+                                        <option disabled selected hidden>Magazzino</option>
+                                        <option value="1">Milano</option>
+                                        <option value="2">Genova</option>
+                                        <option value="3">Bologna</option>
+                                        <option value="4">Napoli</option>
+                                        <option value="5">Verona</option>
+                                        <option value="6">Bari</option>
+                                    </select>
                                     <input type="submit" name="submit" value="Conferma" class="btn btn-secondary w-100"/>
                                 </form>
                             </div>
                             <?php
-                                $qty = 1;
+                                $_SESSION["qty"] = 1;
                                 if (isset($_POST['submit'])) {
                                     $_SESSION["qty"] =  $_POST["quantità"];
                                 }
@@ -96,14 +108,14 @@ session_start();
                             ?>
                             
                             <div class="col-12 mt-3 d-flex justify-content-end">
-                            <?php if(isset($qty))
+                            <?php if(isset($_SESSION["qty"]))
                             { ?>    
-                                <h4 class="text-secondary mt-1 mr-3">Selezione: &times;<?php echo $_SESSION["qty"]?>&nbsp;</h4>
+                                <h5 class="text-secondary mt-1 mr-3">Selezione: &times;<?php echo $_SESSION["qty"]?>&nbsp;</h5>
                                 <h3 class="text-danger font-weight-bold">Totale: <?php echo $_SESSION["prezzo"]; ?>€</h3>
                             </div>
                             <div class="col-12 mt-4 d-flex align-items-end justify-content-end">
-                                <form action="" method="POST" class="w-100">
-                                    <input type="submit" name="ordina" value="Checkout" class="btn bt-orange w-100" onSubmit="showDialog()"/>
+                                <form action="login.php?order=<?php echo $SRC["ID"]; ?>" method="POST" class="w-100">
+                                    <input type="submit" name="ordina" value="Checkout" class="btn bt-orange w-100"/>
                                 </form>
                                 <?php
                             } else{
@@ -111,69 +123,11 @@ session_start();
                             }
                             ?>
                             </div>
-                            
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-            <?php
-            if (isset($_POST['ordina'])){
-                
-        ?>
-       <div class="d-flex align-items-center justify-content-center" style="position:absolute; top:6.1%; min-height:100vh; min-width:100%">
-        <div class="container bg-success p-5 w-100" style="min-height:65rem">
-            <div class="row d-flex justify-content-center">
-            <h2 class="col-12">Ordine confermato:</h2>
-            <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">
-                        <div class="m-5"><img class="img img-fluid" src="<?php echo $SRC["Immagine"]; ?>" alt = "IMG"/></div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-                        <h2 class="mt-5 text-primary font-weight-bold"><?php echo $SRC["Nome"] ?></h2>
-                        <br>
-                        <h6 class="text-secondary border border-secondary pt-5 pb-5 pl-2">
-                            <?php
-                                echo $CPU["Produttore"]." ".$CPU["Serie"]." ".$CPU["Modello"]." ".$CPU["Cores"]."C/".$CPU["Threads"]."T @ ".$CPU["Frequenza"];
-                            ?>
-                            <br>
-                            <?php
-                            echo $RAM["Dimensione"]."GB ".$RAM["Tipo"];
-                            ?>
-                            <br>
-                            <?php
-                            echo $Disco["Tipo"]." ".$Disco["Dimensione"]."GB";
-                            ?>
-                        </h6>
-                </div>
-                <div class="col-12 mt-3 d-flex justify-content-end">
-                    <?php
-                        if(isset($qty))
-                        { 
-                    ?>    
-                    <h4 class="text-secondary mt-1 mr-3">Selezione: &times;<?php echo $_SESSION["qty"]?>&nbsp;</h4>
-                    <h2 class="text-danger font-weight-bold">Totale: <?php echo $_SESSION["prezzo"]; ?>€</h2>
-                </div>
-                <div class="col-12 mt-4 d-flex align-items-end justify-content-end">
-                    <a href="index.php" class="btn btn-primary mr-1">Torna al catalogo</a>
-                    <a href="order.php?order=<?php echo $SRC["ID"]; ?>" class="btn bt-orange">Chiudi</a>
-                    <?php
-                        } else{
-                            exit("Si è verificato un errore imprevisto, per favore ricarica la pagina. Se l'errore persiste contatta l'Assistenza");
-                        }
-                    ?>
-                </div>
-            </div>
-        </div>
-        <?php
-            }
-        ?>
-        </div>
-        
+        </div>        
     </div>
-    <script>
-        function showDialog() {
-            document.getElementById("main").style.display=none;
-        }
-    </script>
 </body>
 </html>

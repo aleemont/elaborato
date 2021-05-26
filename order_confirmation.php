@@ -26,17 +26,33 @@
     </nav>
     <!--Inizializzo la connessione al DB -->
     <?php
-      $user = "root";
-      $pass = "Ale-26062002";
-      try {
-        $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
-      } catch (PDOException $e) {
-        print "Errore nella connessione al Database!: " . $e->getMessage() . "<br/>";
-        die();
-      }
+        $user = "root";
+        $pass = "Ale-26062002";
+        try {
+            $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
+        } catch (PDOException $e) {
+            print "Errore nella connessione al Database!: " . $e->getMessage() . "<br/>";
+            die();
+        }
+        $stm = $dbh->prepare("SELECT * from Prodotto where ID = ?");
+        $stm -> execute([$_SESSION["order"]]);
+        $SRC = $stm->fetch(PDO::FETCH_ASSOC);
+        $stm = null;
+        $stm = $dbh->prepare("SELECT Produttore,Serie,Modello,Cores,Threads,Frequenza FROM CPU WHERE ID = ?");
+        $stm->execute([$SRC["CPU"]]);
+        $CPU = $stm->fetch(PDO::FETCH_ASSOC);
+        $stm = null;
+        $stm = $dbh->prepare("SELECT Dimensione,Tipo FROM RAM WHERE ID = ?");
+        $stm->execute([$SRC["RAM"]]);
+        $RAM = $stm->fetch(PDO::FETCH_ASSOC);
+        $stm = null;
+        $stm = $dbh->prepare("SELECT Dimensione,Tipo,Modello FROM Disco WHERE ID = ?");
+        $stm->execute([$SRC["Disco"]]);
+        $Disco = $stm->fetch(PDO::FETCH_ASSOC);
+        $stm = null;
     ?>
-    <div class="d-flex align-items-center justify-content-center" style="position:absolute; top:7%; min-height:100vh; min-width:100%">
-        <div class="container bg-success p-5 w-100" style="min-height:65rem">
+    <div class="d-flex align-items-center justify-content-center" style="min-height:85vh; min-width:100%">
+        <div class="container bg-success p-5">
             <div class="row d-flex justify-content-center">
             <h2 class="col-12">Ordine confermato:</h2>
             <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">

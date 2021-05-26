@@ -43,3 +43,15 @@ ul {
 input:focus{
     outline: none;
 }
+
+select:focus{
+    outline: none;
+}
+
+.box{
+	margin: 10px 0px;
+	border: 1px solid #2b772e;
+	text-align: center;
+	font-weight: bold;
+	color: #2b772e;
+	}

@@ -4,6 +4,8 @@ session_start();
 if(isset($_SESSION["carrello"])){
     $total_price = 0;
 }
+unset($_SESSION["qty"]);
+unset($_SESSION["price"]);
 ?>
 
 <!DOCTYPE html>
@@ -50,25 +52,21 @@ if(isset($_SESSION["carrello"])){
       }
     ?>
     <div class="container">
-        <table class="table table-hover">
-            <tbody>
+      <div class="card rounded mt-3" style="height: 85vh;  overflow-y:scroll; overflow-x:hidden">
+            <div class="container">
                 <?php 
                     $count = 0;
-                    $c = 0;
                     foreach($_SESSION["carrello"] as $pid){
-                        $count = $count+1;
                         $stm = $dbh->prepare("SELECT * FROM Prodotto WHERE ID = ?");
                         $stm->execute([$pid["ID"]]);
                         $prodotto = $stm->fetch(PDO::FETCH_BOTH);
-                    
                 ?>
-                <tr>
-                    <td><img class="img" src="<?php echo $prodotto["Immagine"]; ?>"/></td>
-                    <td class="pt-5"><h5 class="text-secondary mt-3"><?php echo $prodotto["Nome"] ?></h5>
-                    <td>
-                        <form action="" method="POST" class="w-100">
-                            <input type="number" name="<?php echo $pid["ID"] ?>" min="1" max="20" value="1" step="1" placeholder="Quantità (max. 20)" class="w-100 mt-5 mb-2 rounded p-2">
-                            <select name="magazzino" class="w-100 mt-2 mb-2 rounded p-2 bg-white">
+                <div class="row d-flex align-items-center justify-content-center">
+                    <div class="col-lg-3 col-5 mr-3"><img class="img img-fluid" src="<?php echo $prodotto["Immagine"]; ?>"/></div>
+                    <div class="pt-5 col-md-2 col-4 mr-3"><h5 class="text-secondary mt-3"><?php echo $prodotto["Nome"] ?></h5></div>
+                    <div class="col-md-2 col-4">
+                    <form action="" method="POST" class="ml-3 mr-3">
+                            <select name="magazzino" class="w-100 mt-5 mb-2 rounded p-2 bg-white">
                                 <option disabled selected hidden>Magazzino</option>
                                 <option value="1">Milano</option>
                                 <option value="2">Genova</option>
@@ -77,22 +75,30 @@ if(isset($_SESSION["carrello"])){
                                 <option value="5">Verona</option>
                                 <option value="6">Bari</option>
                             </select>
-                            <input type="submit" name="submit" value="Conferma" class="btn btn-secondary w-100"/>
-                        </form>
-                        <form action="" method="post" class="mb-5">
-                            <input type='hidden' name='id' value="<?php echo $prodotto["ID"]; ?>" />
-                            <button type="submit" name ="remove" value="remove" class="btn btn-danger mt-1 w-100">Rimuovi</button>
-                        </form>
+                            <form method='post' action=''>
+                                <select name="quantity" onChange="this.form.submit()" class="w-100 mb-2 rounded p-2 bg-white">
+                                    <option value="Quantità" selected disabled>Quantità</option>
+                                    <?php
+                                        
+                                        for($i=1;$i<=20;$i++){
+                                    ?>
+                                        <option value="<?php echo $i; ?>"><?php echo $i ?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                </select>
+                                <input type='hidden' name='code' value="<?php echo $pid["ID"]; ?>" />
+                                <input type='hidden' name='action' value="change" />
+                            </form>
+                            <form action="" method="post" class="mb-5 mr-3">
+                                <input type='hidden' name='code' value="<?php echo $pid["ID"]; ?>" />
+                                <input type='hidden' name='action' value="remove" />
+                                <button type='submit' class='btn btn-danger w-100 mr-3'>Rimuovi</button>                            
+                            </form>
                         <?php
-                            if(!$_POST[$pid["ID"]]){
-                                $_POST[$pid["ID"]] = $_SESSION["qty"][$count];
-                            }
-                                if (isset($_POST['submit'])) {
-                                    $_SESSION["qty"][$count] = $_POST[$pid["ID"]];
-                                }
-                            $_SESSION["price"][$pid["ID"]] = (double)$prodotto["Prezzo"] * $_SESSION["qty"][$count];
-                            
-                            if (isset($_POST['remove']) && $_POST['remove']=="remove"){
+
+                             $_SESSION["price"][$pid["ID"]] = $prodotto["Prezzo"];
+                             if (isset($_POST['remove']) && $_POST['remove']=="remove"){
                                 if(!empty($_SESSION["carrello"])){
                                     foreach($_SESSION["carrello"] as $k=>$v){
                                         if($_POST["id"] == $v["ID"]){
@@ -102,17 +108,61 @@ if(isset($_SESSION["carrello"])){
                                     if(empty($_SESSION["carrello"]))
                                         unset($_SESSION["carrello"]);
                                     }
+                                    header("Location: carrello.php");
+                                }
+                                if (isset($_POST['action']) && $_POST['action']=="change"){
+                                  foreach($_SESSION["carrello"] as &$value){
+                                    if($value['ID'] == $_POST["code"]){
+                                        $value['quantity'] = $_POST["quantity"];
+                                        break; // Stop the loop after we've found the product
+                                    }
+                                }
+                                $_SESSION["price"][$pid["ID"]] = (float)$prodotto["Prezzo"]*$_SESSION["carrello"][$count]["quantity"];
+                                      
                                 }
                         ?>
-                    </td>
-                    <td>
-                        <h5 class="text-secondary mt-1 mr-3">Selezione: &times;<?php echo $_SESSION["qty"][$count]?>&nbsp;</h5>
+                    </div>
+                    <div class="col-md-2 col-4">
+                        <h5 class="text-secondary mt-1 mr-3">Selezione: &times;<?php echo $_SESSION["carrello"][$count]["quantity"];?>&nbsp;</h5>
                         <h3 class="text-danger font-weight-bold">Totale: <?php echo $_SESSION["price"][$pid["ID"]]; ?>€</h3>
-                    </td>
-                </tr>
-                <?php }?>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+                <?php 
+                        $count += 1;
+                    }
+                ?>
+                <div class="w-100 d-flex align-items-center justify-content-center">
+                    <?php 
+                        $total_price = (float)0.0;
+                        foreach($_SESSION["price"] as $p){
+                            $total_price = (float)$total_price + $p;
+                        }?>
+                    </div>
+                    <div class="bg-white" style="position:sticky; top:0;">
+                        <div class="w-100 d-flex align-items-center justify-content-end pr-4">
+                            <h2 class="text-secondary font-weight-bold">Totale carrello: <?php echo $total_price; ?>€</h2>
+                        </div>
+                        
+                        <div class="w-100 d-flex align-items-center justify-content-center">
+                            <form action="" method="post" class="mb-5">
+                                <button type="submit" name ="svuota" value="svuota" class="btn btn-danger mb-1 w-25 mr-1">Svuota carrello</button>
+                            </form>
+                            <form action="login.php?cart=true" method="post" class="mb-5">
+                                <button type="submit" name="compra" value="compra" class="btn bt-orange mb-1 w-25 ml-1">Procedi all'ordine</button>
+                            </form>
+                        </div>
+                        <?php
+                            if (isset($_POST['svuota']) && $_POST['svuota']=="svuota"){
+                                if(!empty($_SESSION["carrello"])){
+                                    unset($_SESSION["carrello"]);
+                                    header("location: carrello.php");
+                                }
+                                header("location: carrello.php");
+                            }
+                        ?>
+                    </div>
+            </div>
+      </div>
     </div>
 </body>
 </html>

@@ -100,17 +100,17 @@
                                 </form>
                             </div>
                             <?php
-                                $_SESSION["qty"] = 1;
+                                $_SESSION["qty"][$SRC["ID"]] = 1;
                                 if (isset($_POST['submit'])) {
-                                    $_SESSION["qty"] =  $_POST["quantità"];
+                                    $_SESSION["qty"][$SRC["ID"]] =  $_POST["quantità"];
                                 }
-                                $_SESSION["prezzo"] = (double)$SRC["Prezzo"] * $_SESSION["qty"]; 
+                                $_SESSION["prezzo"] = (double)$SRC["Prezzo"] * $_SESSION["qty"][$SRC["ID"]]; 
                             ?>
                             
                             <div class="col-12 mt-3 d-flex justify-content-end">
-                            <?php if(isset($_SESSION["qty"]))
+                            <?php if(isset($_SESSION["qty"][$SRC["ID"]]))
                             { ?>    
-                                <h5 class="text-secondary mt-1 mr-3">Selezione: &times;<?php echo $_SESSION["qty"]?>&nbsp;</h5>
+                                <h5 class="text-secondary mt-1 mr-3">Selezione: &times;<?php echo $_SESSION["qty"][$SRC["ID"]]?>&nbsp;</h5>
                                 <h3 class="text-danger font-weight-bold">Totale: <?php echo $_SESSION["prezzo"]; ?>€</h3>
                             </div>
                             <div class="col-12 mt-4 d-flex align-items-end justify-content-end">

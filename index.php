@@ -257,7 +257,7 @@
         <div class="card rounded">
           <div class="card-header bg-secondary">
             <div class="container-fluid w-100">
-            <h2 class="text-white m-1">Prodotti in offerta</h2>
+            <h2 class="text-white m-1 font-weight-bold">Prodotti imperdibili</h2>
             </div>
           </div>
           <div class="card-body row p-1 p-md-5">
@@ -463,17 +463,7 @@
                       </div>
                     <div class="m-3 p-0"> 
                       <div class="d-flex justify-content-center"><h1 class="text-danger font-weight-bold"><?php echo $prodotto["Prezzo"]?>€</h1></div>
-                      <?php
-                        if(!isset($_SESSION["codFis"])){
-                      ?>
-                        <a href="login.php?order=<?php echo $prodotto[0]; ?>" class="btn btn-primary w-100 font-weight-bold mb-2" >Acquista ora</a>
-                      <?php
-                        }else{
-                        ?>
                         <a href="order.php?order=<?php echo $prodotto[0]; ?>" class="btn btn-primary w-100 font-weight-bold mb-2" >Acquista ora</a>
-                      <?php 
-                        }
-                      ?>
                       <a href="index.php?addCart=true&prod=<?php echo $prodotto[0] ?>" class="btn w-100 font-weight-bold bt-orange">Aggiungi al carrello</a>
                     </div>
                   </div>
@@ -503,7 +493,7 @@
                           );
                       }
                     }
-                    var_dump($_SESSION["carrello"]);
+                    header("Refresh:0;");
                   }
                 ?>
               </div>

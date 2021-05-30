@@ -1,4 +1,5 @@
 <?php 
+    include("init.php");
     if(!session_id()) session_start();
 ?>
 
@@ -28,17 +29,6 @@
           <a href="index.php" class="h3">Elettro-Shop</a>
         </div>
     </nav>
-    <!--Inizializzo la connessione al DB -->
-    <?php
-      $user = "root";
-      $pass = "Ale-26062002";
-      try {
-        $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
-      } catch (PDOException $e) {
-        print "Errore nella connessione al Database!: " . $e->getMessage() . "<br/>";
-        die();
-      }
-    ?>
     <div class="container rounded mt-5">
     <h1 class="text-secondary ml-5 font-weight-bold">Dati di pagamento</h1>
     <form action="<?php if(isset($_GET['order']))

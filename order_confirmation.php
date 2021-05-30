@@ -1,4 +1,5 @@
 <?php 
+    include("init.php");
     if(!session_id()) session_start();
 ?>
 

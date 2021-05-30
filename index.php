@@ -1,5 +1,6 @@
 <?php 
   if(!session_id()) session_start();
+  include("init.php");
 ?>
 
 <!DOCTYPE html>
@@ -34,17 +35,7 @@
         <a href="carrello.php"><span class="material-icons" style="color:white;">shopping_cart</span><?php echo $cart_count; ?></a>
         </div>
     </nav>
-    <!--Inizializzo la connessione al DB -->
-    <?php
-      $user = "root";
-      $pass = "Ale-26062002";
-      try {
-        $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
-      } catch (PDOException $e) {
-        print "Errore nella connessione al DataBase!: " . $e->getMessage() . "<br/>";
-        die();
-      }
-    ?>
+
     <div class="container-fluid pl-5 pr-5">
       <div class="row mt-3 mb-4">
     <!--Left wrapper start-->

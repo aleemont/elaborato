@@ -1,11 +1,10 @@
 <?php
+include("init.php");
 session_start();
 
 if(isset($_SESSION["carrello"])){
     $total_price = 0;
 }
-unset($_SESSION["qty"]);
-unset($_SESSION["price"]);
 ?>
 
 <!DOCTYPE html>
@@ -40,17 +39,6 @@ unset($_SESSION["price"]);
         <a href="carrello.php"><span class="material-icons" style="color:white;">shopping_cart</span><?php echo $cart_count; ?></a>
         </div>
     </nav>
-    <!--Inizializzo la connessione al DB -->
-    <?php
-      $user = "root";
-      $pass = "Ale-26062002";
-      try {
-        $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
-      } catch (PDOException $e) {
-        print "Errore nella connessione al DataBase!: " . $e->getMessage() . "<br/>";
-        die();
-      }
-    ?>
     <div class="container">
       <div class="card rounded mt-3" style="height: 85vh;  overflow-y:scroll; overflow-x:hidden">
             <div class="container">
@@ -145,10 +133,10 @@ unset($_SESSION["price"]);
                         
                         <div class="w-100 d-flex align-items-center justify-content-center">
                             <form action="" method="post" class="mb-5">
-                                <button type="submit" name ="svuota" value="svuota" class="btn btn-danger mb-1 w-25 mr-1">Svuota carrello</button>
+                                <button type="submit" name ="svuota" value="svuota" class="btn btn-danger mb-1 w-100 mr-1">Svuota carrello</button>
                             </form>
                             <form action="login.php?cart=true" method="post" class="mb-5">
-                                <button type="submit" name="compra" value="compra" class="btn bt-orange mb-1 w-25 ml-1">Procedi all'ordine</button>
+                                <button type="submit" name="compra" value="compra" class="btn bt-orange mb-1 w-100 ml-1">Procedi all'ordine</button>
                             </form>
                         </div>
                         <?php

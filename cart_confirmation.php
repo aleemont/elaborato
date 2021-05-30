@@ -1,4 +1,5 @@
 <?php
+    include("init.php");
     if(!session_id()) session_start();
 
     $user = "root";
@@ -27,15 +28,6 @@
           <a href="index.php" class="h3">Elettro-Shop</a>
         </div>
     </nav>
-    <!--Inizializzo la connessione al DB -->
-    <?php
-        try {
-            $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
-      } catch (PDOException $e) {
-        print "Errore nella connessione al Database!: " . $e->getMessage() . "<br/>";
-        die();
-      }
-    ?>
     <h1 class="text-primary font-weight-bold">Ordine Confermato</h1>
      <div class="d-flex align-items-center justify-content-center" >
         

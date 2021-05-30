@@ -1,4 +1,5 @@
 <?php
+    include("init.php");
     if(!session_id()) session_start();
 
     $user = "root";
@@ -29,15 +30,6 @@
           <a href="index.php?>" class="h3">Elettro-Shop</a>
         </div>
     </nav>
-    <!--Inizializzo la connessione al DB -->
-    <?php
-        try {
-            $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
-      } catch (PDOException $e) {
-        print "Errore nella connessione al Database!: " . $e->getMessage() . "<br/>";
-        die();
-      }
-    ?>
     <div class="d-flex align-items-center justify-content-center" style="min-height:85vh; min-width:100%">
         <div class="container bg-white p-5">
             <div class="row">
@@ -86,7 +78,17 @@
                         <div class="row">
                             <div class="col-12">
                                 <form action="" method="POST" class="w-100 mb-5">
-                                    <input type="number" name="quantità" min="1" max="20" value="1" step="1" placeholder="Quantità (max. 20)" class="w-100 mt-5 mb-2 rounded p-2">
+                                <select name="quantità" onChange="this.form.submit()" class="w-100 mb-2 rounded p-2 bg-white">
+                                    <option value="Quantità" selected disabled>Quantità</option>
+                                    <?php
+                                        
+                                        for($i=1;$i<=20;$i++){
+                                    ?>
+                                        <option value="<?php echo $i; ?>" <?php if($i == $_SESSION["qty"][$SRC["ID"]]) {echo "selected";}  ?>><?php echo $i ?></option>
+                                    <?php
+                                        }
+                                    ?>
+                                </select>
                                     <select name="magazzino" class="w-100 mt-2 mb-2 rounded p-2 bg-white">
                                         <option disabled selected hidden>Magazzino</option>
                                         <option value="1">Milano</option>
@@ -96,15 +98,14 @@
                                         <option value="5">Verona</option>
                                         <option value="6">Bari</option>
                                     </select>
-                                    <input type="submit" name="submit" value="Conferma" class="btn btn-secondary w-100"/>
                                 </form>
                             </div>
                             <?php
                                 $_SESSION["qty"][$SRC["ID"]] = 1;
-                                if (isset($_POST['submit'])) {
-                                    $_SESSION["qty"][$SRC["ID"]] =  $_POST["quantità"];
+                                if (isset($_POST['quantità'])) {
+                                    $_SESSION["qty"][$SRC["ID"]] = $_POST["quantità"];
                                 }
-                                $_SESSION["prezzo"] = (double)$SRC["Prezzo"] * $_SESSION["qty"][$SRC["ID"]]; 
+                                $_SESSION["prezzo"] = (double)$SRC["Prezzo"] * $_SESSION["qty"][$SRC["ID"]];
                             ?>
                             
                             <div class="col-12 mt-3 d-flex justify-content-end">

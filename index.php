@@ -361,7 +361,6 @@
                         }
                       }
                     }
-                    var_dump($main_query);
                     $stm = $dbh->query($main_query);
                     $prodotti = $stm->fetchAll(PDO::FETCH_BOTH);
                     $stm = null;

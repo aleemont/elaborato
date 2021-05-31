@@ -1,36 +1,41 @@
+<?php 
+  if(!session_id()) session_start();
+  include("init.php");
+?>
+
 <!DOCTYPE html>
 <html lang="it">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="Alessandro Monticelli">
-        <meta name="description" content="I tuoi prodotti high-tech preferiti, da Elettro-Shop">
-        <meta name="robots" content="all | none | index | noindex | follow | nofollow">
-        <meta name="dc.language" content="ita" scheme="RFC1766">
-        <!--Bootstrap CSS-->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link rel="stylesheet" href="./assets/css/colors.css">
-        <link rel="stylesheet" href="./assets/css/main.css">
-        <title>ElettroShop</title>
-    </head>
-    <body>
-        <nav class="navbar navbar-default bg-primary">
-            <div class="navbar-brand">
-            <a href="index.php" class="h3">Elettro-Shop</a>
-            </div>
-        </nav>
-        <!--Inizializzo la connessione al DB -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="author" content="Alessandro Monticelli">
+    <meta name="description" content="I tuoi prodotti high-tech preferiti, da Elettro-Shop">
+    <meta name="robots" content="all | none | index | noindex | follow | nofollow">
+    <meta name="dc.language" content="ita" scheme="RFC1766">
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <link rel="stylesheet" href="./assets/css/colors.css">
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <title>ElettroShop</title>
+</head>
+<body>
+    <nav class="navbar navbar-default bg-primary">
+        <div class="navbar-brand">
+          <a href="index.php" class="h3">Elettro-Shop</a>
+        </div>
+        <div class="d-flex align-items-center justify-content-end">
         <?php
-            $user = "root";
-            $pass = "Ale-26062002";
-            try {
-                $dbh = new PDO('mysql:host=localhost;dbname=elaborato', $user, $pass);
-            } catch (PDOException $e) {
-                print "Errore nella connessione al DataBase!: " . $e->getMessage() . "<br/>";
-                die();
-            }
+          if(!empty($_SESSION["carrello"])) {
+          $cart_count = count(array_keys($_SESSION["carrello"]));
+          }
         ?>
+        <a href="carrello.php"><span class="material-icons" style="color:white;">shopping_cart</span><?php echo $cart_count; ?></a>
+        </div>
+    </nav>
+
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12 d-flex align-items-center justify-content-center">

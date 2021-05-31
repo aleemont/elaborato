@@ -2,9 +2,9 @@
 include("init.php");
 session_start();
 
-if(isset($_SESSION["carrello"])){
-    $total_price = 0;
-}
+
+$total_price = 0;
+
 ?>
 
 <!DOCTYPE html>

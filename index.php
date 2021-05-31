@@ -361,6 +361,7 @@
                         }
                       }
                     }
+                    var_dump($main_query);
                     $stm = $dbh->query($main_query);
                     $prodotti = $stm->fetchAll(PDO::FETCH_BOTH);
                     $stm = null;
@@ -422,7 +423,7 @@
                               ?>
                               <span class="text-secondary font-weight-bold">RAM:</span>
                               <div class="list-group p-0">
-                                  <div class="list-group-item"><?php echo $RAM["Dimensione"]." ".$RAM["Tipo"];?></div>
+                                  <div class="list-group-item"><?php echo $RAM["Dimensione"]."GB ".$RAM["Tipo"];?></div>
                               </div>
 
                               <?php 
@@ -465,9 +466,6 @@
                   }
                   if(isset($_GET['addCart']) && $_GET['addCart']==true){
                     $prod = $_GET['prod'];
-                    $stm = $dbh->prepare("SELECT * FROM Prodotto WHERE ID = ?");
-                    $stm->execute([$prod]);
-                    $prodotto=$stm->fetch(PDO::FETCH_ASSOC);
                     $carrello = array(
                       $prod = array(
                         "ID" => $prod
